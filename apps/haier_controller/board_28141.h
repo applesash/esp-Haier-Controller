@@ -1,0 +1,126 @@
+#pragma once
+
+#define BOARD_MODEL_NAME "ESP32-S3-Touch-LCD-4.3B-BOX (SKU 28141)"
+#define BOARD_LCD_WIDTH 800
+#define BOARD_LCD_HEIGHT 480
+#define BOARD_LVGL_WIDTH 800
+#define BOARD_LVGL_HEIGHT 480
+#define BOARD_LVGL_ROTATION 0
+#define BOARD_LVGL_COLOR_FORMAT 0
+
+// 28141 board GPIO inventory. This is the box-board pin map and intentionally
+// contains no GPIO_NUM_* names or placeholder safety values.
+#define BOARD_IO_0   0
+#define BOARD_IO_1   1
+#define BOARD_IO_2   2
+#define BOARD_IO_3   3
+#define BOARD_IO_4   4
+#define BOARD_IO_5   5
+#define BOARD_IO_6   6
+#define BOARD_IO_7   7
+#define BOARD_IO_8   8
+#define BOARD_IO_9   9
+#define BOARD_IO_10  10
+#define BOARD_IO_11  11
+#define BOARD_IO_12  12
+#define BOARD_IO_13  13
+#define BOARD_IO_14  14
+#define BOARD_IO_15  15
+#define BOARD_IO_16  16
+#define BOARD_IO_17  17
+#define BOARD_IO_18  18
+#define BOARD_IO_19  19
+#define BOARD_IO_20  20
+#define BOARD_IO_21  21
+#define BOARD_IO_38  38
+#define BOARD_IO_39  39
+#define BOARD_IO_40  40
+#define BOARD_IO_41  41
+#define BOARD_IO_42  42
+#define BOARD_IO_43  43
+#define BOARD_IO_44  44
+#define BOARD_IO_45  45
+#define BOARD_IO_46  46
+#define BOARD_IO_47  47
+#define BOARD_IO_48  48
+
+#define BOARD_GPIO0   BOARD_IO_0
+#define BOARD_GPIO1   BOARD_IO_1
+#define BOARD_GPIO2   BOARD_IO_2
+#define BOARD_GPIO3   BOARD_IO_3
+#define BOARD_GPIO4   BOARD_IO_4
+#define BOARD_GPIO5   BOARD_IO_5
+#define BOARD_GPIO6   BOARD_IO_6
+#define BOARD_GPIO7   BOARD_IO_7
+#define BOARD_GPIO8   BOARD_IO_8
+#define BOARD_GPIO9   BOARD_IO_9
+#define BOARD_GPIO10  BOARD_IO_10
+#define BOARD_GPIO11  BOARD_IO_11
+#define BOARD_GPIO12  BOARD_IO_12
+#define BOARD_GPIO13  BOARD_IO_13
+#define BOARD_GPIO14  BOARD_IO_14
+#define BOARD_GPIO15  BOARD_IO_15
+#define BOARD_GPIO16  BOARD_IO_16
+#define BOARD_GPIO17  BOARD_IO_17
+#define BOARD_GPIO18  BOARD_IO_18
+#define BOARD_GPIO19  BOARD_IO_19
+#define BOARD_GPIO20  BOARD_IO_20
+#define BOARD_GPIO21  BOARD_IO_21
+#define BOARD_GPIO38  BOARD_IO_38
+#define BOARD_GPIO39  BOARD_IO_39
+#define BOARD_GPIO40  BOARD_IO_40
+#define BOARD_GPIO41  BOARD_IO_41
+#define BOARD_GPIO42  BOARD_IO_42
+#define BOARD_GPIO43  BOARD_IO_43
+#define BOARD_GPIO44  BOARD_IO_44
+#define BOARD_GPIO45  BOARD_IO_45
+#define BOARD_GPIO46  BOARD_IO_46
+#define BOARD_GPIO47  BOARD_IO_47
+#define BOARD_GPIO48  BOARD_IO_48
+
+// Known 28141 interface assignments from the boxed board schematic.
+#define BOARD_BOOT_BUTTON        BOARD_IO_0
+#define BOARD_LCD_BL             BOARD_IO_46
+#define BOARD_LCD_RST            BOARD_IO_47
+#define BOARD_TOUCH_SDA          BOARD_IO_8
+#define BOARD_TOUCH_SCL          BOARD_IO_9
+#define BOARD_TOUCH_IRQ          BOARD_IO_39
+#define BOARD_TOUCH_RST          BOARD_IO_38
+#define BOARD_I2C_SDA            BOARD_IO_8
+#define BOARD_I2C_SCL            BOARD_IO_9
+#define BOARD_RS485_TX           BOARD_IO_17
+#define BOARD_RS485_RX           BOARD_IO_18
+#define BOARD_RS485_DIRECTION_MODE 0
+#define BOARD_RS485_A_TERMINAL    "A"
+#define BOARD_RS485_B_TERMINAL    "B"
+#define BOARD_CAN_TX             BOARD_IO_19
+#define BOARD_CAN_RX             BOARD_IO_20
+#define BOARD_IO_EXPANDER_SDA     BOARD_IO_8
+#define BOARD_IO_EXPANDER_SCL     BOARD_IO_9
+#define BOARD_IO_TERMINAL_DI0     0
+#define BOARD_IO_TERMINAL_DI1     1
+#define BOARD_IO_TERMINAL_DO0     0
+#define BOARD_IO_TERMINAL_DO1     1
+#define BOARD_IO_TERMINAL_EXIO0   BOARD_IO_TERMINAL_DI0
+#define BOARD_IO_TERMINAL_EXIO5   BOARD_IO_TERMINAL_DI1
+#define BOARD_IO_TERMINAL_OD0     BOARD_IO_TERMINAL_DO0
+#define BOARD_IO_TERMINAL_OD1     BOARD_IO_TERMINAL_DO1
+#define BOARD_DI_1                BOARD_IO_TERMINAL_DI0
+#define BOARD_DI_2                BOARD_IO_TERMINAL_DI1
+#define BOARD_DO_1                BOARD_IO_TERMINAL_DO0
+#define BOARD_DO_2                BOARD_IO_TERMINAL_DO1
+#define BOARD_GREEN_TERMINAL_DI1  BOARD_DI_1
+#define BOARD_GREEN_TERMINAL_DI2  BOARD_DI_2
+#define BOARD_GREEN_TERMINAL_DO1  BOARD_DO_1
+#define BOARD_GREEN_TERMINAL_DO2  BOARD_DO_2
+#define BOARD_SD_MISO            BOARD_IO_13
+#define BOARD_SD_MOSI            BOARD_IO_11
+#define BOARD_SD_SCK             BOARD_IO_12
+#define BOARD_SD_CS              BOARD_IO_10
+#define BOARD_TF_CARD_DETECT     BOARD_IO_14
+#define BOARD_USER_LED           BOARD_IO_48
+#define BOARD_STATUS_LED         BOARD_IO_48
+#define BOARD_5V_ENABLE          BOARD_IO_45
+
+// Keep the board file grounded to the exact 28141 hardware layout instead of the
+// earlier non-box design assumptions.

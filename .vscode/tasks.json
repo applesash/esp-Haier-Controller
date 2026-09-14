@@ -1,0 +1,88 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Git: Save All & Push",
+      "type": "shell",
+      "command": "bash",
+      "args": ["${workspaceFolder}/scripts/git-save-push.sh", "${input:commitMessage}"],
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": [],
+      "group": "none"
+    },
+    {
+      "label": "Build Haier Controller",
+      "type": "shell",
+      "command": "bash",
+      "args": ["${workspaceFolder}/scripts/idf-task.sh", "apps/haier_controller", "build"],
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": "$msCompile",
+      "group": { "kind": "build", "isDefault": true }
+    },
+    {
+      "label": "Haier: Build + Flash",
+      "type": "shell",
+      "command": "bash",
+      "args": ["${workspaceFolder}/scripts/haier-controller.sh", "build-flash", "${input:serialPort}"],
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": "$msCompile",
+      "group": "build"
+    },
+    {
+      "label": "Haier: Serial Monitor",
+      "type": "shell",
+      "command": "bash",
+      "args": ["${workspaceFolder}/scripts/haier-controller.sh", "monitor", "${input:serialPort}"],
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": []
+    },
+    {
+      "label": "Haier: Validate Build Artifacts",
+      "type": "shell",
+      "command": "bash",
+      "args": ["${workspaceFolder}/scripts/haier-controller.sh", "check"],
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": []
+    },
+    {
+      "label": "Clean Haier Controller",
+      "type": "shell",
+      "command": "bash",
+      "args": ["${workspaceFolder}/scripts/idf-task.sh", "apps/haier_controller", "fullclean"],
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": "$msCompile",
+      "group": "build"
+    },
+    {
+      "label": "Flash Haier Controller",
+      "type": "shell",
+      "command": "bash",
+      "args": ["${workspaceFolder}/scripts/idf-task.sh", "apps/haier_controller", "flash"],
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": "$msCompile",
+      "group": "build"
+    },
+    {
+      "label": "Flash Device (auto-detect port)",
+      "type": "shell",
+      "command": "bash",
+      "args": ["${workspaceFolder}/scripts/flash-device.sh", "haier", "${input:serialPort}"],
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": "$msCompile",
+      "group": "build"
+    }
+  ],
+  "inputs": [
+    {
+      "id": "commitMessage",
+      "type": "promptString",
+      "description": "Commit message"
+    },
+    {
+      "id": "serialPort",
+      "type": "promptString",
+      "description": "Serial port (leave empty for auto-detection)",
+      "default": ""
+    }
+  ]
+}

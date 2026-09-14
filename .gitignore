@@ -1,0 +1,9 @@
+build/
+**/build/
+*.log
+sdkconfig
+.DS_Store
+.vscode/*
+!.vscode/esp-Haier-Controller.code-workspace
+!.vscode/tasks.json
+captures/

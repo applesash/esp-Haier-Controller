@@ -1,0 +1,13 @@
+{
+  "folders": [
+    { "path": "." },
+    { "path": "apps/haier_controller" },
+    { "path": "common" },
+    { "path": "preview" }
+  ],
+  "settings": {
+    "idf.adapterTargetName": "esp32s3",
+    "idf.currentSetup": "/home/sascha-hlubek/esp/esp-idf",
+    "C_Cpp.default.configurationProvider": "espressif.esp-idf-extension"
+  }
+}

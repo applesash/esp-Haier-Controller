@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Haier Controller Preview</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <main class="device" aria-label="800 by 480 Haier controller preview">
+    <header class="topbar">
+      <div><span class="eyebrow">HAIER CONTROLLER</span><h1 id="page-title">System overview</h1></div>
+      <nav class="view-nav" aria-label="Main views">
+        <button class="view-button active" type="button" data-view="overview">Overview</button>
+        <button class="view-button" type="button" data-view="settings">Settings</button>
+      </nav>
+      <div class="status"><span class="dot"></span> Passive monitor <span class="divider"></span> RS485 listening</div>
+    </header>
+    <section class="view active" data-panel="overview">
+      <div class="tile-grid" aria-label="Temperature and energy readings"></div>
+    </section>
+    <section class="view settings-view" data-panel="settings" hidden>
+      <div class="settings-category-grid" aria-label="Settings categories">
+        <button class="settings-category" type="button" data-setting="wifi"><strong>Wi-Fi Settings</strong><span id="wifi-setting-summary">not configured</span></button>
+        <button class="settings-category" type="button" data-setting="ota"><strong>OTA Updates</strong><span id="ota-setting-summary">stable · v0.1.0-dev</span></button>
+        <button class="settings-category" type="button" data-setting="commissioning"><strong>RS485 Sensors</strong><span>Commissioning and assignments</span></button>
+        <button class="settings-category" type="button" data-setting="display"><strong>Display and Touch</strong><span>800 × 480 · 80%</span></button>
+        <button class="settings-category warning-category" type="button" data-setting="outputs"><strong>Field Outputs</strong><span>Disabled pending approval</span></button>
+      </div>
+      <p class="settings-note">Select a category to edit the retained controller configuration.</p>
+    </section>
+    <section class="view settings-detail-view" data-panel="settings-detail" hidden>
+      <form class="settings-grid" id="settings-form">
+        <div class="settings-detail-heading"><button class="back-button" type="button" id="settings-back">Back to Settings</button><span id="settings-detail-title">Settings</span></div>
+        <fieldset class="settings-group detail-panel" data-setting-panel="commissioning">
+          <legend>RS485 observation</legend>
+          <label>Mode<select name="mode"><option value="read-only">Read-only</option></select></label>
+          <label>Baud rate<select name="baud"><option value="9600">9600</option><option value="19200">19200</option></select></label>
+          <label>Parity<select name="parity"><option value="none">None</option><option value="even">Even</option><option value="odd">Odd</option></select></label>
+          <label>Stop bits<select name="stopBits"><option value="1">1</option><option value="2">2</option></select></label>
+          <p class="setting-note">Device address: <strong id="device-address">discovery pending</strong></p>
+          <label>Sensor role<select id="commissioning-role"><option value="upstairs">Upstairs</option><option value="downstairs">Downstairs</option><option value="outdoor">Outdoor</option></select></label>
+          <label>Current address<input id="commissioning-address" type="number" min="1" max="247" value="1"></label>
+          <p class="setting-note" id="commissioning-state">idle · No commissioning attempt</p>
+          <div class="inline-actions"><button id="commissioning-start" type="button">Detect</button><button id="commissioning-verify" type="button">Verify</button></div>
+        </fieldset>
+        <fieldset class="settings-group detail-panel" data-setting-panel="display" hidden>
+          <legend>Display and touch</legend>
+          <label>Brightness <output id="brightness-value">80%</output><input name="brightness" type="range" min="10" max="100" step="5" value="80"></label>
+          <label>Rotation<select name="rotation"><option value="0">0°</option></select></label>
+          <label class="toggle"><input name="touch" type="checkbox" checked> Touch input enabled</label>
+          <p class="setting-note">Panel target: 800 × 480</p>
+        </fieldset>
+        <fieldset class="settings-group warning-group detail-panel" data-setting-panel="outputs" hidden>
+          <legend>Field outputs</legend>
+          <label class="toggle"><input name="outputs" type="checkbox" disabled> Green-terminal outputs enabled</label>
+          <p class="setting-note" id="output-note">Outputs remain disabled until explicit hardware approval.</p>
+        </fieldset>
+        <fieldset class="settings-group detail-panel" data-setting-panel="wifi" hidden>
+          <legend>Wi-Fi provisioning</legend>
+          <label>Network name<input id="wifi-ssid" name="wifiSsid" value="not configured"></label>
+          <label>Device name<input id="wifi-device-name" name="deviceName" value="haier-controller"></label>
+          <p class="setting-note" id="wifi-state">Access point · haier-hmi</p>
+          <div class="inline-actions"><button id="wifi-scan" type="button">Scan</button><button id="wifi-connect" type="button">Connect</button></div>
+        </fieldset>
+        <fieldset class="settings-group detail-panel" data-setting-panel="ota" hidden>
+          <legend>OTA updates</legend>
+          <label>Update channel<select id="ota-channel" name="otaChannel"><option value="stable">Stable</option><option value="beta">Beta</option></select></label>
+          <p class="setting-note" id="ota-state">v0.1.0-dev · not checked</p>
+          <div class="inline-actions"><button id="ota-check" type="button">Check</button><button id="ota-apply" type="button" disabled>Install</button></div>
+        </fieldset>
+        <div class="settings-actions"><button class="save-button" type="submit">Save preview settings</button><span id="save-state" role="status"></span></div>
+      </form>
+    </section>
+    <footer><span>Last bus frame: 14:32:08</span><span>Roomstat: discovery pending</span><span>9 signals</span></footer>
+  </main>
+  <script src="./app.js"></script>
+</body>
+</html>
