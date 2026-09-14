@@ -1,4 +1,5 @@
 # ESP Haier Controller
+The same dashboard model is intended for the device web interface and the LVGL HMI.
 
 ESP32-S3 project for observing a Haier HVAC installation through RS485/Modbus and displaying two room temperatures on the Waveshare ESP32-S3-Touch-LCD-4.3B-BOX (SKU 28141).
 
@@ -44,7 +45,7 @@ same operations without requiring the command details to be rediscovered.
 
 The target is `esp32s3`. Display and touch bring-up remains behind the board adapter until the 4.3B-BOX panel configuration is verified.
 
-The preview Settings page already models Wi-Fi provisioning, OTA channel/check
-state, and staged RS485 sensor commissioning. These actions are simulated until
-the device web API and the external-dongle protocol evidence are in place. The
-same dashboard model is intended for the device web interface and the LVGL HMI.
+The preview Settings page models Wi-Fi provisioning, OTA channel/check state,
+and staged RS485 sensor commissioning. These actions are simulated until the
+device web API and external-dongle protocol evidence are in place. The same
+dashboard model is intended for the device web interface and LVGL HMI.
