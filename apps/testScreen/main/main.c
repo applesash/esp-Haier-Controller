@@ -13,7 +13,7 @@
 #include "freertos/task.h"
 #include "lvgl.h"
 
-// Waveshare 28141 BOX pinout from the official schematic/documentation.
+// 28141 BOX pinout from the official board schematic/documentation.
 #define LCD_H_RES 800
 #define LCD_V_RES 480
 #define LCD_PCLK_HZ (16 * 1000 * 1000)
