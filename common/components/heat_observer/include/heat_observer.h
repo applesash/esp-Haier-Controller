@@ -16,6 +16,7 @@ typedef struct {
 } heat_observer_config_t;
 
 esp_err_t heat_observer_start(const heat_observer_config_t *config);
+esp_err_t heat_observer_stop(void);
 
 #ifdef __cplusplus
 }

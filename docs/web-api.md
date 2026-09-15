@@ -5,6 +5,11 @@ SPIFFS partition. The browser preview and the device web UI must use the same
 rendering code. Only the live adapter changes from local simulation to these
 endpoints.
 
+The web interface is not a separate design. Its pages and controls are the same
+preview files that define the LVGL/touch HMI contract. API fields must map to
+the shared dashboard model; an endpoint must not introduce a web-only state
+that the preview and panel cannot represent.
+
 ## Endpoints
 
 - `GET /api/status`

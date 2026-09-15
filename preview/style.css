@@ -44,6 +44,7 @@ footer { margin-top: 26px; color: #71898d; font-size: 10px; }
 .settings-group select, .settings-group input[type="range"] { display: block; width: 100%; margin-top: 8px; }
 .settings-group input:not([type="checkbox"]):not([type="range"]) { display: block; width: 100%; margin-top: 8px; border: 1px solid #36545a; padding: 9px; color: #edf4f2; background: #142329; }
 .settings-group select { border: 1px solid #36545a; padding: 9px; color: #edf4f2; background: #142329; }
+.settings-group select[hidden] { display: none; }
 .settings-group input[type="range"] { accent-color: #72d6cf; }
 .toggle { display: flex !important; align-items: center; gap: 9px; text-transform: none !important; }
 .toggle input { accent-color: #72d6cf; }

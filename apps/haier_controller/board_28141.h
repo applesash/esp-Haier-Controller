@@ -80,19 +80,42 @@
 
 // Known 28141 interface assignments from the boxed board schematic.
 #define BOARD_BOOT_BUTTON        BOARD_IO_0
-#define BOARD_LCD_BL             BOARD_IO_46
-#define BOARD_LCD_RST            BOARD_IO_47
+#define BOARD_LCD_BL             -1
+#define BOARD_LCD_RST            -1
 #define BOARD_TOUCH_SDA          BOARD_IO_8
 #define BOARD_TOUCH_SCL          BOARD_IO_9
-#define BOARD_TOUCH_IRQ          BOARD_IO_39
-#define BOARD_TOUCH_RST          BOARD_IO_38
+#define BOARD_TOUCH_IRQ          -1
+#define BOARD_TOUCH_RST          -1
+#define BOARD_TOUCH_RST_EXIO     1
 #define BOARD_I2C_SDA            BOARD_IO_8
 #define BOARD_I2C_SCL            BOARD_IO_9
-#define BOARD_RS485_TX           BOARD_IO_17
-#define BOARD_RS485_RX           BOARD_IO_18
+#define BOARD_RS485_TX           BOARD_IO_44
+#define BOARD_RS485_RX           BOARD_IO_43
 #define BOARD_RS485_DIRECTION_MODE 0
 #define BOARD_RS485_A_TERMINAL    "A"
 #define BOARD_RS485_B_TERMINAL    "B"
+#define BOARD_LCD_RGB_VSYNC       BOARD_IO_3
+#define BOARD_LCD_RGB_HSYNC       BOARD_IO_46
+#define BOARD_LCD_RGB_DE          BOARD_IO_5
+#define BOARD_LCD_RGB_PCLK        BOARD_IO_7
+#define BOARD_LCD_RGB_DATA0       BOARD_IO_14
+#define BOARD_LCD_RGB_DATA1       BOARD_IO_38
+#define BOARD_LCD_RGB_DATA2       BOARD_IO_18
+#define BOARD_LCD_RGB_DATA3       BOARD_IO_17
+#define BOARD_LCD_RGB_DATA4       BOARD_IO_10
+#define BOARD_LCD_RGB_DATA5       BOARD_IO_39
+#define BOARD_LCD_RGB_DATA6       BOARD_IO_0
+#define BOARD_LCD_RGB_DATA7       BOARD_IO_45
+#define BOARD_LCD_RGB_DATA8       BOARD_IO_48
+#define BOARD_LCD_RGB_DATA9       BOARD_IO_47
+#define BOARD_LCD_RGB_DATA10      BOARD_IO_21
+#define BOARD_LCD_RGB_DATA11      BOARD_IO_1
+#define BOARD_LCD_RGB_DATA12      BOARD_IO_2
+#define BOARD_LCD_RGB_DATA13      BOARD_IO_42
+#define BOARD_LCD_RGB_DATA14      BOARD_IO_41
+#define BOARD_LCD_RGB_DATA15      BOARD_IO_40
+#define BOARD_LCD_AUX_I2C_ADDRESS 0x38
+#define BOARD_CH422G_ADDRESS      0x24
 #define BOARD_CAN_TX             BOARD_IO_19
 #define BOARD_CAN_RX             BOARD_IO_20
 #define BOARD_IO_EXPANDER_SDA     BOARD_IO_8
@@ -118,9 +141,9 @@
 #define BOARD_SD_SCK             BOARD_IO_12
 #define BOARD_SD_CS              BOARD_IO_10
 #define BOARD_TF_CARD_DETECT     BOARD_IO_14
-#define BOARD_USER_LED           BOARD_IO_48
-#define BOARD_STATUS_LED         BOARD_IO_48
-#define BOARD_5V_ENABLE          BOARD_IO_45
+#define BOARD_USER_LED           -1
+#define BOARD_STATUS_LED         -1
+#define BOARD_5V_ENABLE          -1
 
 // Keep the board file grounded to the exact 28141 hardware layout instead of the
 // earlier non-box design assumptions.

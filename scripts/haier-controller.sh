@@ -5,6 +5,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 APP_PATH="apps/haier_controller"
+TEST_APP_PATH="apps/testScreen"
 PORT="${HAIER_PORT:-}"
 
 usage() {
@@ -18,6 +19,11 @@ Commands:
   monitor [port] Open the ESP-IDF serial monitor
   check          Validate shared model and generated build artifacts
   preview        Serve the browser preview on port 4173
+  env            Check the ESP-IDF environment
+  test-build     Build the clean Hello World test screen
+  test-flash [port] Flash the clean Hello World test screen
+  test-build-flash [port] Build and flash the clean Hello World test screen
+  test-monitor [port] Monitor the clean Hello World test screen
 EOF
   exit 1
 }
@@ -44,6 +50,12 @@ flash() {
   exec bash "$SCRIPT_DIR/flash-device.sh" haier "$port_value"
 }
 
+test_flash() {
+  local port_value="${1:-$PORT}"
+  [[ -n "$port_value" ]] || port_value="$(detect_port)"
+  exec bash "$SCRIPT_DIR/flash-device.sh" testScreen "$port_value"
+}
+
 command_name="${1:-}"
 shift || true
 case "$command_name" in
@@ -56,6 +68,21 @@ case "$command_name" in
   build-flash)
     bash "$SCRIPT_DIR/idf-task.sh" "$APP_PATH" build
     flash "${1:-}"
+    ;;
+  test-build)
+    exec bash "$SCRIPT_DIR/idf-task.sh" "$TEST_APP_PATH" build
+    ;;
+  test-flash)
+    test_flash "${1:-}"
+    ;;
+  test-build-flash)
+    bash "$SCRIPT_DIR/idf-task.sh" "$TEST_APP_PATH" build
+    test_flash "${1:-}"
+    ;;
+  test-monitor)
+    port_value="${1:-$PORT}"
+    [[ -n "$port_value" ]] || port_value="$(detect_port)"
+    exec bash "$SCRIPT_DIR/idf-task.sh" "$TEST_APP_PATH" monitor -p "$port_value"
     ;;
   monitor)
     port_value="${1:-$PORT}"
@@ -72,6 +99,9 @@ case "$command_name" in
   preview)
     cd "$REPO_ROOT"
     exec python3 -m http.server "${1:-4173}"
+    ;;
+  env)
+    exec bash "$SCRIPT_DIR/setup-env.sh"
     ;;
   *)
     usage

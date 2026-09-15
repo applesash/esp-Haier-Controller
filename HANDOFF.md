@@ -32,6 +32,7 @@ The folder was empty when generation started. The following scaffold now exists:
 
 - `CMakeLists.txt`: ESP-IDF project root targeting `haier_controller`
 - `apps/haier_controller`: initial ESP32-S3 application and partition table
+- `apps/testScreen`: isolated ESP-IDF 5.5/LVGL 8.4 Hello World display test
 - `common/components/heat_common`: copied reusable shared helpers
 - `common/components/heat_modbus`: copied reusable Modbus framing helpers
 - `scripts/idf-task.sh`: ESP-IDF wrapper
@@ -54,6 +55,10 @@ The folder was empty when generation started. The following scaffold now exists:
 	status, Wi-Fi scan/connect, and locked commissioning/OTA endpoints
 - `common/components/heat_observer`: passive UART RS485 byte observer with no
 	transmit path
+- `scripts/haier-controller.sh`: single low-credit workflow for environment,
+	build, check, monitor, preview, and explicit flash operations
+- `scripts/setup-env.sh`: non-destructive ESP-IDF environment check
+- `docs/test-screen.md`: isolated testScreen scope, pin map, and workflow
 
 ## Important Decisions
 
@@ -63,12 +68,21 @@ The folder was empty when generation started. The following scaffold now exists:
 - Treat the display controller, touch controller, reset/backlight wiring, and BSP
 	as unverified until confirmed for the 28141 BOX panel.
 - Treat green-terminal outputs as disabled until an explicit hardware test is approved.
-- RS485 direction is automatic on the board; TX/RX are GPIO17/GPIO18 and A/B are
-	transceiver terminal signals.
+- RS485 direction is automatic on the board; TX/RX are GPIO44/GPIO43 and A/B are
+	transceiver terminal signals. GPIO17/GPIO18 belong to the RGB LCD data bus.
 - Keep sensor commissioning writes and OTA installation visibly locked until
 	their evidence and validation gates are complete.
 - The current firmware starts the `haier-hmi` AP, serves the preview from
 	SPIFFS, persists Wi-Fi credentials, and exposes read-only status/observation.
+- Treat preview, device web, and LVGL/touch as synchronized surfaces. Add UI
+	structure to the preview/model first, then mirror it in web API data and LVGL.
+- The current firmware contains the official Waveshare 28141 BOX RGB/LVGL
+	transport and our own synchronized nine-tile HMI. The corrected GT911 path
+	can identify the controller, but touch data reads still fail, so the official
+	display-only baseline is enabled while the remaining I2C behavior is isolated.
+- `board_28141.h` remains the project board contract. The imported vendor files
+	are only the low-level Waveshare BOX transport; the HMI screen and Settings
+	page remain project-owned LVGL code.
 - Do not assume the existing `esp-heating-control` 4-inch 480x480 BSP is electrically compatible with this 4.3B-BOX.
 - Do not commit build output, `sdkconfig`, serial-port settings, credentials, or raw captures.
 
@@ -80,16 +94,32 @@ The source project uses ESP-IDF 5.5 and the local installation is expected at `/
 
 ## Board Research Note
 
+Official board documentation: [Waveshare ESP32-S3-Touch-LCD-4.3B](https://docs.waveshare.com/ESP32-S3-Touch-LCD-4.3B)
+Official ESP-IDF reference: [Waveshare ESP32-S3-Touch-LCD-4.3B ESP-IDF](https://docs.waveshare.com/ESP32-S3-Touch-LCD-4.3B/ESP-IDF)
+
 Public Waveshare sources distinguish the ESP32-S3-Touch-LCD-4.3 and 4.3-B board definitions. The exact 4.3B-BOX display/BSP configuration must be verified before wiring the live LVGL display. Do not silently substitute the existing `waveshare__esp32_s3_touch_lcd_4` component.
 
 ## Next Actions
 
-1. Confirm the CH422G address and command behavior on the physical board.
-2. Confirm the exact 4.3B-BOX RGB/touch controller and timing.
-3. Flash the built firmware and storage image after confirming it is safe to
-	reboot the board, then join `haier-hmi` and verify the device web interface.
+1. Use `scripts/haier-controller.sh env`, `build`, and `check` for routine
+	workflow operations; use `monitor /dev/ttyACM0` for device logs.
+2. Isolate the remaining GT911 data-register I2C failure before re-enabling
+	touch; keep the display-only baseline in the meantime.
+3. Join `haier-hmi` and verify the device web interface after each firmware
+	flash.
 4. Use the external USB RS485 dongle for passive captures and evidence-backed
 	sensor commissioning.
 5. Add HTTPS OTA manifest checking, rollback, and shared status reporting.
 6. Add LVGL settings/commissioning pages and automated preview/web/LVGL parity checks.
 7. Initialize the new folder as its own Git repository and configure its remote.
+
+## Isolated display test
+
+`apps/testScreen` is intentionally separate from the production controller. It
+contains one Hello World label and one button, uses only ESP-IDF v5.5.x and
+LVGL 8.4.0, and has project-owned 28141 RGB/CH422G I/O. It must not inherit
+Waveshare sample source, BSP code, touch code, RS485 code, or web code.
+
+Use `scripts/haier-controller.sh test-build`, `test-build-flash`, and
+`test-monitor` so ESP-IDF setup and serial permissions are handled by the
+wrapper.

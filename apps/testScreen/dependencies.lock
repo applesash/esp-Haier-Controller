@@ -1,0 +1,17 @@
+dependencies:
+  idf:
+    source:
+      type: idf
+    version: 5.5.5
+  lvgl/lvgl:
+    dependencies: []
+    source:
+      path: /home/sascha-hlubek/VSC-Workspace/esp-Haier-Controller/apps/haier_controller/managed_components/lvgl__lvgl
+      type: local
+    version: 8.4.0
+direct_dependencies:
+- idf
+- lvgl/lvgl
+manifest_hash: f30b6b594259485ae46bdde90ff111837a948bc2ff80ce154cc6fcb66c976038
+target: esp32s3
+version: 2.0.0

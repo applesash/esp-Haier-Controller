@@ -9,6 +9,7 @@
 
 static const char *TAG = "heat_observer";
 static uart_port_t s_uart_port;
+static TaskHandle_t s_observer_task;
 
 static void observer_task(void *context)
 {
@@ -59,6 +60,15 @@ esp_err_t heat_observer_start(const heat_observer_config_t *config)
                         "UART pin setup failed");
     s_uart_port = config->uart_port;
     BaseType_t task_created = xTaskCreate(observer_task, "rs485_observer", 3072,
-                                          NULL, 5, NULL);
+                                          NULL, 5, &s_observer_task);
     return task_created == pdPASS ? ESP_OK : ESP_ERR_NO_MEM;
+}
+
+esp_err_t heat_observer_stop(void)
+{
+    if (s_observer_task != NULL) {
+        vTaskDelete(s_observer_task);
+        s_observer_task = NULL;
+    }
+    return uart_driver_delete(s_uart_port);
 }

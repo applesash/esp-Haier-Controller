@@ -41,8 +41,11 @@
           <p class="setting-note">Device address: <strong id="device-address">discovery pending</strong></p>
           <label>Sensor role<select id="commissioning-role"><option value="upstairs">Upstairs</option><option value="downstairs">Downstairs</option><option value="outdoor">Outdoor</option></select></label>
           <label>Current address<input id="commissioning-address" type="number" min="1" max="247" value="1"></label>
+          <label>Target address<input id="commissioning-target" type="number" min="1" max="247" value="24"></label>
+          <label>Temperature offset °C<input id="commissioning-temperature-offset" type="number" step="0.1" value="0"></label>
+          <label>Humidity offset %<input id="commissioning-humidity-offset" type="number" step="0.1" value="0"></label>
           <p class="setting-note" id="commissioning-state">idle · No commissioning attempt</p>
-          <div class="inline-actions"><button id="commissioning-start" type="button">Detect</button><button id="commissioning-verify" type="button">Verify</button></div>
+          <div class="inline-actions"><button id="commissioning-start" type="button">Detect</button><button id="commissioning-change" type="button">Change address</button><button id="commissioning-verify" type="button">Verify</button><button id="commissioning-calibrate" type="button">Calibrate</button></div>
         </fieldset>
         <fieldset class="settings-group detail-panel" data-setting-panel="display" hidden>
           <legend>Display and touch</legend>
@@ -59,6 +62,8 @@
         <fieldset class="settings-group detail-panel" data-setting-panel="wifi" hidden>
           <legend>Wi-Fi provisioning</legend>
           <label>Network name<input id="wifi-ssid" name="wifiSsid" value="not configured"></label>
+          <select id="wifi-network-list" aria-label="Scanned Wi-Fi networks" hidden></select>
+          <label>Password<input id="wifi-password" name="wifiPassword" type="password" autocomplete="off"></label>
           <label>Device name<input id="wifi-device-name" name="deviceName" value="haier-controller"></label>
           <p class="setting-note" id="wifi-state">Access point · haier-hmi</p>
           <div class="inline-actions"><button id="wifi-scan" type="button">Scan</button><button id="wifi-connect" type="button">Connect</button></div>

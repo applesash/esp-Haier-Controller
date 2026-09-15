@@ -1,0 +1,17 @@
+menu "testScreen LVGL"
+config TESTSCREEN_LVGL_TASK_CORE
+    int "LVGL task core"
+    default 1
+config TESTSCREEN_LVGL_TASK_PRIORITY
+    int "LVGL task priority"
+    default 2
+config TESTSCREEN_LVGL_TASK_STACK_SIZE_KB
+    int "LVGL task stack size KB"
+    default 8
+config TESTSCREEN_LVGL_TICK_MS
+    int "LVGL tick period ms"
+    default 2
+config TESTSCREEN_LVGL_BUFFER_HEIGHT
+    int "LVGL buffer height"
+    default 100
+endmenu

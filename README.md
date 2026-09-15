@@ -31,6 +31,7 @@ bash scripts/idf-task.sh apps/haier_controller build
 Use the project wrapper for routine operations:
 
 ```sh
+scripts/haier-controller.sh env
 scripts/haier-controller.sh build
 scripts/haier-controller.sh check
 scripts/haier-controller.sh monitor /dev/ttyACM0
@@ -38,10 +39,11 @@ scripts/haier-controller.sh build-flash /dev/ttyACM0
 scripts/haier-controller.sh preview
 ```
 
-`build` creates both the firmware image and `storage.bin`. `flash` and
-`build-flash` are the only commands that write to the board. `monitor` reads
-the USB serial log, including passive RS485 bytes. The VS Code tasks expose the
-same operations without requiring the command details to be rediscovered.
+This wrapper is the low-credit workflow entry point, following the adjacent
+project's `setup-env.sh` and `idf-task.sh` pattern. `build` creates both the
+firmware image and `storage.bin`. `flash` and `build-flash` are the only
+commands that write to the board. `monitor` reads the USB serial log, including
+passive RS485 bytes. The VS Code tasks expose the same operations.
 
 The target is `esp32s3`. Display and touch bring-up remains behind the board adapter until the 4.3B-BOX panel configuration is verified.
 

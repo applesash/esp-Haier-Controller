@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Flash the Haier controller firmware to a connected board over USB in one step:
+# Flash a project firmware to a connected board over USB in one step:
 # auto-detects the serial port, fixes serial-port permissions if needed, then
 # delegates to idf-task.sh. Avoids the manual port/permission diagnosis loop.
 set -euo pipefail
@@ -7,7 +7,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 usage() {
-  echo "Usage: $0 haier [serial-port]" >&2
+  echo "Usage: $0 {haier|testScreen} [serial-port]" >&2
   exit 1
 }
 
@@ -15,8 +15,9 @@ usage() {
 TARGET="$1"
 case "$TARGET" in
   haier) APP_PATH="apps/haier_controller" ;;
+  testScreen) APP_PATH="apps/testScreen" ;;
   *)
-    echo "Unknown target '$TARGET' (expected 'haier')" >&2
+    echo "Unknown target '$TARGET' (expected 'haier' or 'testScreen')" >&2
     usage
     ;;
 esac

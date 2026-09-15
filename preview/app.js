@@ -34,6 +34,7 @@ const wifiState = document.querySelector('#wifi-state');
 const otaState = document.querySelector('#ota-state');
 const commissioningState = document.querySelector('#commissioning-state');
 const settingsDetailTitle = document.querySelector('#settings-detail-title');
+const wifiNetworkList = document.querySelector('#wifi-network-list');
 
 function renderTile(tile) {
   const article = document.createElement('article');
@@ -71,6 +72,7 @@ function render(model) {
   otaState.textContent = `${model.settings.ota.version} · ${model.settings.ota.manifestStatus}`;
   document.querySelector('#commissioning-role').value = model.settings.commissioning.role;
   document.querySelector('#commissioning-address').value = model.settings.commissioning.currentAddress;
+  document.querySelector('#commissioning-target').value = model.settings.commissioning.targetAddress;
   commissioningState.textContent = `${model.settings.commissioning.stage} · ${model.settings.commissioning.lastResult}`;
 }
 
@@ -124,12 +126,60 @@ settingsForm.addEventListener('submit', (event) => {
   window.setTimeout(() => { saveState.textContent = ''; }, 2200);
 });
 
-document.querySelector('#wifi-scan').addEventListener('click', () => {
-  wifiState.textContent = 'Scan complete · no networks selected';
+document.querySelector('#wifi-scan').addEventListener('click', async () => {
+  wifiState.textContent = 'Scanning nearby networks...';
+  try {
+    const start = await fetch('/api/wifi/scan', {method: 'POST'});
+    if (!start.ok) throw new Error('scan unavailable');
+    let response = await fetch('/api/wifi/scan');
+    let result = await response.json();
+    for (let attempt = 0; result.busy && attempt < 12; attempt += 1) {
+      await new Promise((resolve) => window.setTimeout(resolve, 500));
+      response = await fetch('/api/wifi/scan');
+      result = await response.json();
+    }
+    if (!response.ok) throw new Error('scan unavailable');
+    wifiNetworkList.replaceChildren(...(result.networks || []).map((network) => {
+      const option = document.createElement('option');
+      option.value = network.ssid;
+      option.textContent = `${network.ssid} (${network.rssi} dBm)`;
+      return option;
+    }));
+    wifiNetworkList.hidden = !(result.networks || []).length;
+    wifiState.textContent = result.busy
+      ? 'Scan still running · try again shortly'
+      : `Scan complete · ${(result.networks || []).length} networks found`;
+  } catch (error) {
+    wifiState.textContent = 'Preview only · device scan unavailable';
+  }
 });
 
-document.querySelector('#wifi-connect').addEventListener('click', () => {
-  wifiState.textContent = 'Preview only · device API not connected';
+wifiNetworkList.addEventListener('change', (event) => {
+  document.querySelector('#wifi-ssid').value = event.target.value;
+});
+
+document.querySelector('#wifi-connect').addEventListener('click', async () => {
+  const payload = {
+    ssid: document.querySelector('#wifi-ssid').value.trim(),
+    password: document.querySelector('#wifi-password').value,
+    deviceName: document.querySelector('#wifi-device-name').value.trim()
+  };
+  if (!payload.ssid) {
+    wifiState.textContent = 'Enter or scan for a network first';
+    return;
+  }
+  try {
+    const response = await fetch('/api/wifi/connect', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(payload)
+    });
+    if (!response.ok) throw new Error('connect unavailable');
+    const result = await response.json();
+    wifiState.textContent = `${result.status} · keep haier-hmi available while connecting`;
+  } catch (error) {
+    wifiState.textContent = 'Preview only · device API not connected';
+  }
 });
 
 document.querySelector('#ota-check').addEventListener('click', () => {
@@ -140,13 +190,32 @@ document.querySelector('#ota-apply').addEventListener('click', () => {
   otaState.textContent = 'Preview only · update not applied';
 });
 
-document.querySelector('#commissioning-start').addEventListener('click', () => {
-  commissioningState.textContent = 'detect · Preview only · no RS485 writes performed';
-});
+async function commission(step) {
+  const payload = {
+    step,
+    address: Number(document.querySelector('#commissioning-address').value),
+    target_address: Number(document.querySelector('#commissioning-target').value),
+    temperature_offset: Number(document.querySelector('#commissioning-temperature-offset').value),
+    humidity_offset: Number(document.querySelector('#commissioning-humidity-offset').value)
+  };
+  commissioningState.textContent = `${step} · contacting device...`;
+  try {
+    const response = await fetch('/api/modbus/commission', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(payload)
+    });
+    const result = await response.json();
+    commissioningState.textContent = `${step} · ${result.message || response.statusText}`;
+  } catch (error) {
+    commissioningState.textContent = 'Preview only · device API not connected';
+  }
+}
 
-document.querySelector('#commissioning-verify').addEventListener('click', () => {
-  commissioningState.textContent = 'verify · Preview only · waiting for dongle capture';
-});
+document.querySelector('#commissioning-start').addEventListener('click', () => commission('detect'));
+document.querySelector('#commissioning-change').addEventListener('click', () => commission('change'));
+document.querySelector('#commissioning-verify').addEventListener('click', () => commission('verify'));
+document.querySelector('#commissioning-calibrate').addEventListener('click', () => commission('calibrate'));
 
 fetch('../common/dashboard/dashboard_model.json')
   .catch(() => fetch('./dashboard_model.json'))
